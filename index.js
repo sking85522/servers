@@ -10,7 +10,6 @@ import { Octokit } from "@octokit/rest";
 
 const app = express();
 
-// Enable CORS for external connections (Required for Gemini Spark)
 app.use(cors());
 app.use(express.json());
 
@@ -112,7 +111,13 @@ function createMcpServer() {
 
 app.get("/sse", async (req, res) => {
   console.log("Got SSE connection request");
-  const transport = new SSEServerTransport("/messages", res);
+  
+  // Create Absolute URL for SSE endpoint
+  const protocol = req.headers["x-forwarded-proto"] || "https";
+  const host = req.get("host");
+  const absoluteMessagesUrl = `${protocol}://${host}/messages`;
+
+  const transport = new SSEServerTransport(absoluteMessagesUrl, res);
   const sessionId = transport.sessionId;
   transports.set(sessionId, transport);
 
