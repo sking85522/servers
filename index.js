@@ -8,6 +8,8 @@ import {
 import { Octokit } from "@octokit/rest";
 
 const app = express();
+app.use(express.json());
+
 const PORT = process.env.PORT || 10000;
 
 const octokit = new Octokit({
@@ -135,6 +137,3 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
-const app = express();
-app.use(express.json()); // <-- यह लाइन जोड़ें
-const PORT = process.env.PORT || 10000;
