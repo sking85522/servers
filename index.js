@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
 import {
@@ -8,6 +9,9 @@ import {
 import { Octokit } from "@octokit/rest";
 
 const app = express();
+
+// Enable CORS for external connections (Required for Gemini Spark)
+app.use(cors());
 app.use(express.json());
 
 const PORT = process.env.PORT || 10000;
