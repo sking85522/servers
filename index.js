@@ -1,18 +1,31 @@
 import express from "express";
-import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
-import { Octokit } from "@octokit/rest";
 
 const app = express();
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
 
-app.get("/sse", async (req, res) => {
-  console.log("New SSE Connection");
+app.get("/", (req, res) => {
+  res.send("GitHub MCP Server is Live and Running!");
+});
+
+app.get("/sse", (req, res) => {
   res.setHeader("Content-Type", "text/event-stream");
   res.setHeader("Cache-Control", "no-cache");
   res.setHeader("Connection", "keep-alive");
   res.flushHeaders();
+
+  console.log("Client connected via SSE");
+
+  // Keep-alive ping
+  const timer = setInterval(() => {
+    res.write(`: keepalive\n\n`);
+  }, 15000);
+
+  req.on("close", () => {
+    clearInterval(timer);
+    console.log("Client disconnected");
+  });
 });
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+app.listen(PORT, () => {
+  console.log(`MCP Server running on port ${PORT}`);
 });
