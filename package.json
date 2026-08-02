@@ -8,6 +8,7 @@
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.1",
     "@octokit/rest": "^20.0.2",
+    "cors": "^2.8.5",
     "express": "^4.19.2"
   }
 }
